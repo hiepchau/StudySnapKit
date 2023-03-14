@@ -9,93 +9,128 @@ import UIKit
 import SnapKit
 class ViewController: UIViewController {
     
-    @IBOutlet weak var gray: UIView!
-    @IBOutlet weak var black: UIView!
-    @IBOutlet weak var teal: UIView!
-    @IBOutlet weak var yellow: UIView!
-    @IBOutlet weak var violet: UIView!
-    let redView = UIView()
-    let blueView = UIView()
-    var topConstraint: Constraint?
+    let avatar = UIImageView()
+    let username = UITextField()
+    let txtUsername = UILabel()
+    let password = UITextField()
+    let txtPassword = UILabel()
+    let checkBoxButton = UIButton()
+    let txtRememberme = UILabel()
+    let signInButton = UIButton()
+    let cancelButton = UIButton()
+    let txtPolicy = UITextView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        gray.isHidden = true
-        teal.isHidden = true
-        yellow.isHidden = true
-        violet.isHidden = true
-        black.isHidden = true
-        
-        redView.backgroundColor = .red
-        blueView.backgroundColor = .blue
-        
-        view.addSubview(redView)
-        view.addSubview(blueView)
-        
-        redView.snp.makeConstraints { make in
-            make.width.height.equalTo(50)
-            make.center.equalTo(view.snp.center)
-        }
-        
-        blueView.snp.makeConstraints { make in
-            make.width.height.equalTo(redView.snp.width)
-            make.centerX.equalTo(view.snp.centerX)
-            topConstraint = make.top.equalTo(redView.snp.bottom).offset(50).constraint
-        }
-        
-        let button = UIButton()
-        button.setTitle("Update Constraint", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .systemPink
-        button.addTarget(self, action: #selector(updateConstraint), for: .touchUpInside)
-        view.addSubview(button)
-        
-        button.snp.makeConstraints { make in
-            make.centerX.equalTo(view.snp.centerX)
-            make.top.equalTo(blueView.snp.bottom).offset(50)
-            make.width.equalTo(200)
-            make.height.equalTo(50)
-        }
-        
-        let button1 = UIButton()
-        button1.setTitle("Remake Constraint", for: .normal)
-        button1.setTitleColor(.white, for: .normal)
-        button1.backgroundColor = .systemPink
-        button1.addTarget(self, action: #selector(remakeConstraint), for: .touchUpInside)
-        view.addSubview(button1)
-        
-        button1.snp.makeConstraints { make in
-            make.centerX.equalTo(view.snp.centerX)
-            make.bottom.equalTo(button.snp.bottom).offset(50)
-        }
+        registerUI()
+        setupUI()
     }
     
-    @objc func updateConstraint() {
-        topConstraint?.update(offset: 200)
-        updateConstraints()
+    func registerUI() {
+        self.view.addSubview(avatar)
+        self.view.addSubview(username)
+        self.view.addSubview(txtUsername)
+        self.view.addSubview(password)
+        self.view.addSubview(txtPassword)
+        self.view.addSubview(checkBoxButton)
+        self.view.addSubview(txtRememberme)
+        self.view.addSubview(signInButton)
+        self.view.addSubview(cancelButton)
+        self.view.addSubview(txtPolicy)
     }
     
-    func updateConstraints() {
-        blueView.snp.updateConstraints { make in
-            make.top.equalTo(redView.snp.bottom).offset(100)
+    func setupUI() {
+        self.setupAvatarUI()
+        self.setupUsernameUI()
+        self.setupPasswordUI()
+//        self.setupRememberUI()
+//        self.setupButtonUI()
+//        self.setupPolicyUI()
+    }
+    
+    func setupAvatarUI() {
+        avatar.layer.cornerRadius = 40
+        avatar.layer.borderColor = UIColor.black.cgColor
+        avatar.layer.borderWidth = 2.0
+
+        avatar.clipsToBounds = true
+        avatar.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(50)
+            make.width.height.equalTo(80)
+
         }
     }
-    
-    @objc func remakeConstraint() {
-        remakeConstraints()
-    }
-    
-    func remakeConstraints() {
-        redView.snp.remakeConstraints { make in
-            make.width.height.equalTo(100)
-            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leadingMargin)
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.topMargin)
+
+    func setupUsernameUI() {
+        txtUsername.text = "username"
+        txtUsername.snp.makeConstraints { make in
+            make.top.equalTo(avatar.snp.bottom).offset(30)
+            make.leading.equalToSuperview().offset(30)
+        }
+        
+        username.layer.borderColor = UIColor.black.cgColor
+        username.layer.borderWidth = 2.0
+        username.snp.makeConstraints { make in
+            make.top.equalTo(txtUsername.snp.top)
+            make.trailing.equalToSuperview().offset(-8)
+            make.leading.equalTo(txtUsername.snp.trailing).offset(8)
         }
     }
-    
-//    redView.snp.makeConstraints { make in
-//        make.width.height.equalTo(50)
-//        make.center.equalTo(view.snp.center)
+
+    func setupPasswordUI() {
+        txtPassword.text = "password"
+        txtPassword.snp.makeConstraints { make in
+            make.top.equalTo(txtUsername.snp.bottom).offset(30)
+            make.leading.equalTo(txtUsername.snp.leading)
+        }
+        password.layer.borderColor = UIColor.black.cgColor
+        password.layer.borderWidth = 2.0
+        password.isSecureTextEntry = true
+        password.snp.makeConstraints { make in
+            make.top.equalTo(txtPassword.snp.top)
+            make.trailing.equalTo(username.snp.trailing)
+            make.leading.equalTo(txtPassword.snp.trailing).offset(8)
+        }
+    }
+//
+//    func setupRememberUI() {
+//        checkBoxButton.setImage(UIImage(systemName: "square"), for: .normal)
+//        checkBoxButton.snp.makeConstraints { make in
+//            make.width.height.equalTo(30)
+//            make.top.equalTo(txtRememberme.snp.top)
+//            make.leading.equalTo(txtUsername.snp.leading)
+//        }
+//
+//        txtRememberme.text = "Remember me"
+//        txtRememberme.snp.makeConstraints { make in
+//            make.top.equalTo(txtPassword.snp.bottom).offset(30)
+//            make.leading.equalTo(checkBoxButton.snp.trailing).offset(8)
+//        }
 //    }
-    
+//
+//    func setupButtonUI() {
+//        signInButton.setTitle("Sign In", for: .normal)
+//        signInButton.snp.makeConstraints { make in
+//            make.top.equalTo(checkBoxButton.snp.bottom).offset(30)
+//            make.leading.equalTo(txtUsername.snp.leading)
+//        }
+//
+//        cancelButton.setTitle("Cancel", for: .normal)
+//        cancelButton.snp.makeConstraints { make in
+//            make.top.equalTo(signInButton.snp.top)
+//            make.trailing.equalToSuperview().offset(-30)
+//        }
+//    }
+//
+//    func setupPolicyUI() {
+//        txtPolicy.text = "By signed In that you agree with our policy right."
+//        txtPolicy.textAlignment = .center
+//        txtPolicy.snp.makeConstraints { make in
+//            make.top.equalTo(signInButton.snp.bottom).offset(30)
+//            make.bottom.equalToSuperview().offset(-50)
+//            make.centerY.centerX.equalToSuperview()
+//        }
+//    }
 }
 
